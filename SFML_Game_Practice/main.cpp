@@ -43,12 +43,50 @@ int main()
     float cloud2Speed = 0.0f;
     float cloud3Speed = 0.0f;
 
+    Clock clock;
     while (window.isOpen())
     {
         if (Keyboard::isKeyPressed(Keyboard::Escape))
         {
             window.close();
         }
+        Time dt = clock.restart();
+        if (!beeActive)
+        {
+            srand(time(0));
+            beeSpeed = (rand() % 200) + 200;
+            srand(time(0)*10);
+            float height = (rand() % 500) + 500;
+            spriteBee.setPosition(2000, height);
+            beeActive = true;
+        }
+        else {
+            spriteBee.setPosition(spriteBee.getPosition().x - (beeSpeed * dt.asSeconds()), spriteBee.getPosition().y);
+            if (spriteBee.getPosition().x < -100)
+            {
+                beeActive = false;
+            }
+        }
+
+        if (!cloud1Active)
+        {
+            srand(time(0));
+            cloud1Speed = (rand() % 200);
+            srand(time(0) * 10);
+            float height = (rand() % 150);
+            spriteCloud1.setPosition(-200, height);
+            cloud1Active = true;
+        }
+        else
+        {
+            spriteCloud1.setPosition(spriteCloud1.getPosition().x + (cloud1Speed * dt.asSeconds()), spriteCloud1.getPosition().y);
+            if (spriteCloud1.getPosition().x > 1920)
+            {
+                cloud1Active = false;
+            }
+
+        }
+
         window.clear();
         window.draw(spriteBackground);
         window.draw(spriteCloud1);
